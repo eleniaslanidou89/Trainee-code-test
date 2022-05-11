@@ -1,5 +1,6 @@
 const Joi = require('@hapi/joi')
 const express = require('express')
+const req = require('express/lib/request')
 const api = express()
 
 api.use(express.json())
@@ -34,7 +35,7 @@ api.get('/api/Movies', (req, res) => {
   res.send(allMovies)
 })
 
-/* Returns movies from specific genre (2) */
+/* Returns movies from certain genre (2) */
 api.get('/api/Movies/genre/:genre', (req, res) => {
   const movie = allMovies.find((c) => c.genre === req.params.genre)
   if (!movie)
@@ -77,6 +78,14 @@ api.post('/api/Movies', (req, res) => {
   }
   allMovies.push(newMovie)
   res.send(newMovie)
+})
+
+/* Returns movie with certain id (10) */
+api.get('/api/Movies/:id', (req, res) => {
+  const movie = allMovies.find((c) => c.id === parseInt(req.params.id))
+  if (!movie)
+    return res.status(404).send('The movies with the given ID was not found')
+  res.send(movie)
 })
 
 function ValidateMovie(movie) {

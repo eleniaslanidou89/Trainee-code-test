@@ -18,30 +18,35 @@ describe('Testing', () => {
     })
   })
 
-  /* Testing to delete a movie with a certain ID */
-//   it('DELETE /Movies/:id', () => {
-//     return request.delete(`Movies/14`).then((res) => {
-//       console.log(res.body)
-//       expect(res.body).to.be.eq({})
-//     })
-//   })
-
-/* Testing adding a new movie */
-it('POST /Movies', () => {
+  /* Testing adding a new movie */
+  it('POST /Movies', () => {
     const data = {
       title: 'Test name',
       description: 'Test The first Blender Open Movie from 2006',
       subtitle: 'Test By Blender Foundation',
       thumb: 'Test images/ElephantsDream.jpg',
-      genre: 'Test Action'
-    };
+      genre: 'Test Action',
+    }
 
     return request
       .post('Movies')
       .send(data)
       .then((res) => {
-        expect(res.body).to.deep.include(data);
-      });
-  });
+        expect(res.body).to.deep.include(data)
+      })
+  })
 
+  /* Testing returning a movie with certain id */
+  it('GET /Movies/:id', () => {
+    return request.get(`Movies/3`).then((res) => {
+      expect(res.body.id).to.be.eq(3)
+    })
+  })
+
+  /* Testing deleting a certain id */
+  //   it('DELETE /Movies/:id', () => {
+  //     return request.delete(`Movies/14`).then((res) => {
+  //       console.log(res.body)
+  //       expect(res.body).to.be.eq({})
+  //     })
 })
