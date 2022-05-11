@@ -2,6 +2,8 @@ const Joi = require('@hapi/joi')
 const express = require('express')
 const api = express()
 
+api.use(express.json())
+
 const moviesJson = require('./movies.json')
 class MovieAPI {
   constructor(movies) {
@@ -55,6 +57,38 @@ api.delete('/api/Movies/:id', (req, res) => {
   // Return the same movie - response to our client
   res.send(movie)
 })
+
+/* Add a new movie (9) */
+api.post('/api/Movies', (req, res) => {
+  const { error } = ValidateMovie(req.body)
+  if (error) {
+    // Bad Request
+    return res.status(400).send(error.details[0].message)
+  }
+
+  const newMovie = {
+    id: allMovies.length + 1,
+    title: req.body.title,
+    subtitle: req.body.subtitle,
+    thumb: req.body.thumb,
+    description: req.body.description,
+    genre: req.body.genre,
+    rating: Math.floor(Math.random() * 6),
+  }
+  allMovies.push(newMovie)
+  res.send(newMovie)
+})
+
+function ValidateMovie(movie) {
+  const schema = {
+    title: Joi.string().min(3).required(),
+    subtitle: Joi.string().min(3).required(),
+    description: Joi.string().min(3).required(),
+    thumb: Joi.string().min(3).required(),
+    genre: Joi.string().min(3).required(),
+  }
+  return Joi.validate(movie, schema)
+}
 
 const port = process.env.PORT || 3000
 api.listen(port, () => console.log(`Listening on ${port}...`))

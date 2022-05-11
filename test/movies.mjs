@@ -26,4 +26,22 @@ describe('Testing', () => {
 //     })
 //   })
 
+/* Testing adding a new movie */
+it('POST /Movies', () => {
+    const data = {
+      title: 'Test name',
+      description: 'Test The first Blender Open Movie from 2006',
+      subtitle: 'Test By Blender Foundation',
+      thumb: 'Test images/ElephantsDream.jpg',
+      genre: 'Test Action'
+    };
+
+    return request
+      .post('Movies')
+      .send(data)
+      .then((res) => {
+        expect(res.body).to.deep.include(data);
+      });
+  });
+
 })
