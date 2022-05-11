@@ -27,3 +27,6 @@ console.log(allMovies)
 api.get('/', (req, res) => {
     res.send('Hello World!')
 })
+
+const port = process.env.PORT || 3000
+api.listen(port, () => console.log(`Listening on ${port}...`))
